@@ -1,3 +1,4 @@
+# coding=UTF-8
 import os,sys,re
 dict={}
 basedir=sys.argv[1]
@@ -10,7 +11,6 @@ def lowertranslate(filedirpath,filename):
         pass
     else:
         os.rename(os.path.join(filedirpath, filename), os.path.join(filedirpath, filename.lower()))
-        print("小写了"+filename)
 def removeInvisiable(fileddirpath,filename):
     if filename.startswith('.'):
         fileorpath=os.path.join(fileddirpath,filename)
@@ -31,6 +31,7 @@ def dorename(num):
     strwhole=filelist[num]
     type="drawable"
     oldname=""
+    oldnametail='.png'
     extend=''
     print("待命名文件"+strwhole)
     newname=input("请输入新名字")
@@ -40,13 +41,14 @@ def dorename(num):
         type="mipmap"
     if len(strarray)<=2:
         oldname=strarray[1]
+        oldnametail=oldname.split('.')[1]
         strtemp=os.path.join(basedir,type)
-        os.rename(os.path.join(strtemp,oldname),os.path.join(strtemp,newname))
     else:
         oldname = strarray[2]
+        oldnametail=oldname.split('.')[1]
         strtemp=os.path.join(basedir,type+'-'+strarray[1])
-        os.rename(os.path.join(strtemp,oldname),os.path.join(strtemp,newname))
         extend=strarray[1]
+    os.rename(os.path.join(strtemp,oldname),os.path.join(strtemp,newname+'.'+oldnametail))
     for sizeextend in sizearray:
         if sizeextend==extend:
             continue
@@ -56,8 +58,9 @@ def dorename(num):
         else:
             filesearch=os.path.join(pathsearch,oldname)
         if os.path.isfile(filesearch):
-            os.rename(filesearch,os.path.join(pathsearch,newname))
-    print(strarray)
+            os.rename(filesearch,os.path.join(pathsearch,newname+'.'+oldnametail))
+    print("重命名完成")
+    exit()
 
 def listtorename():
     index=0
